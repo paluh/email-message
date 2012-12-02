@@ -317,7 +317,6 @@ class EmailMultiAlternatives(EmailMessage):
                 msg.attach(self._create_mime_attachment(*alternative))
         return msg
 
-
 def get_connection(host, port, username=None, password=None, use_tls=False):
     connection = smtplib.SMTP(host, port, local_hostname=get_dns())
     if use_tls:
@@ -328,6 +327,13 @@ def get_connection(host, port, username=None, password=None, use_tls=False):
             connection.login(username, password)
     return connection
 
+def close_connection(connection):
+    try:
+        connection.quit()
+    except socket.sslerror:
+        # This happens when calling quit() on a TLS connection
+        # sometimes.
+        connection.close()
 
 def send_message(email_message, connection):
     from_email = sanitize_address(email_message.from_email, email_message.encoding)
