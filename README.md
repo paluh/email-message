@@ -10,5 +10,6 @@ It doesn't depend on any global smtp `connection` or settings - `send_message` f
     >>> m = email_message.EmailMultiAlternatives(subject='spam', body='spam spam spam', from_email='spammer@example.com', to=['recipient@example.com'],
     ...                                          alternatives=[('<html><body><ul><li>spam</li><li>spam</li></ul></body></html>', 'text/html')])
     >>> email_message.send_message(m, c)
+    >>> c.quit()
 
 For more details look into django documentation (and into `email_message.__all__` ;-)).
