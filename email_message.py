@@ -15,7 +15,11 @@ import socket
 import smtplib
 import time
 
+__version__ = '1.0'
+
+
 __all__ = ['get_connection', 'send_message', 'EmailMessage', 'EmailMultiAlternatives']
+
 
 _dns = None
 def get_dns():
