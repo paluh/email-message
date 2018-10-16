@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from collections import namedtuple
 from email import charset as Charset, encoders as Encoders
 from email.generator import Generator
 from email.header import Header
