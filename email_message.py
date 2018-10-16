@@ -321,14 +321,20 @@ class EmailMultiAlternatives(EmailMessage):
                 msg.attach(self._create_mime_attachment(*alternative))
         return msg
 
-def get_connection(host, port, username=None, password=None, use_tls=False):
-    connection = smtplib.SMTP(host, port, local_hostname=get_dns())
-    if use_tls:
-        connection.ehlo()
-        connection.starttls()
-        connection.ehlo()
-        if username and password:
-            connection.login(username, password)
+PROTOCOL = namedtuple('Protocol', ['SSL', 'TLS', 'PLAIN'])('SSL', 'TLS', 'PLAIN')
+
+def get_connection(host, port, username=None, password=None, protocol=PROTOCOL.PLAIN):
+    if protocol == PROTOCOL.SSL:
+        connection = smtplib.SMTP_SSL(host, port)
+    else:
+        connection = smtplib.SMTP(host, port, local_hostname=get_dns())
+        if protocol == PROTOCOL.TLS:
+            connection.ehlo()
+            connection.starttls()
+            connection.ehlo()
+
+    if username and password:
+        connection.login(username, password)
     return connection
 
 def close_connection(connection):
