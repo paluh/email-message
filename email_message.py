@@ -16,7 +16,7 @@ import socket
 import smtplib
 import time
 
-__version__ = '1.1.1'
+__version__ = '1.1.2'
 
 
 __all__ = ['get_connection', 'send_message', 'EmailMessage', 'EmailMultiAlternatives']
@@ -257,7 +257,7 @@ class EmailMessage(object):
         Converts the content, mimetype pair into a MIME attachment object.
         """
         basetype, subtype = mimetype.split('/', 1)
-        if basetype == 'text':
+        if basetype == 'text' and isinstance(content, unicode):
             attachment = SafeMIMEText(content.encode(self.encoding), subtype, self.encoding)
         else:
             # Encode non-text attachments with base64.
